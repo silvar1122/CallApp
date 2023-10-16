@@ -16,7 +16,7 @@ import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationS
 public class MainActivity extends AppCompatActivity {
 
     Button submit;
-    EditText et_user_id;
+    EditText et_user_id,et_user_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         submit=findViewById(R.id.submit);
         et_user_id=findViewById(R.id.et_user_id);
+        et_user_name=findViewById(R.id.et_user_name);
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -35,25 +36,29 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                // StartService(et_user_id.getText().toString());
                 String the_user_id=et_user_id.getText().toString();
+                String the_user_name=et_user_name.getText().toString();
                 if( the_user_id.isEmpty()){
                     return;
                 }
-                StartService(the_user_id);
+                StartService(the_user_id,the_user_name);
                 Intent intent=new Intent(MainActivity.this,SendCallInvitationActivity.class);
                 intent.putExtra("userID",the_user_id);
+                intent.putExtra("userName",the_user_name);
                 startActivity(intent);
 
             }
         });
 
+//
+
     }
 
-    private void StartService(String the_userID){
+    private void StartService(String the_userID,String the_username){
         Application application = getApplication(); // Android's application context
-        long appID = 1187119285;
-        String appSign ="fdaaba8d7519b0edc7f903aa58e58e373b5cff558b1374dae309a1625582d51f";
-        String userID ="microsoft";
-        String userName ="microsoft";
+        long appID =1187119285 ;   // yourAppID
+        String appSign ="fdaaba8d7519b0edc7f903aa58e58e373b5cff558b1374dae309a1625582d51f";  // yourAppSign
+        String userID =the_userID; // yourUserID, userID should only contain numbers, English characters, and '_'.
+        String userName =the_username;   // yourUserName
 
         ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
         callInvitationConfig.notifyWhenAppRunningInBackgroundOrQuit = true;
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         notificationConfig.channelID = "CallInvitation";
         notificationConfig.channelName = "CallInvitation";
         ZegoUIKitPrebuiltCallInvitationService.init(getApplication(), appID, appSign, userID, userName,callInvitationConfig);
-    }
+        }
 
     @Override
     protected void onDestroy() {

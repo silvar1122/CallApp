@@ -35,13 +35,15 @@ public class SendCallInvitationActivity extends AppCompatActivity {
         et_receiver_id.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String targer_userID=et_receiver_id.getText().toString().trim();
-                SetVoiceCall("huawei");
-                SetVideoCall("huawei");
+
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                String targer_userID=et_receiver_id.getText().toString().trim();
+                SetVoiceCall(targer_userID,targer_userID);
+               // SetVideoCall(targer_userID,targer_userID);
 
             }
 
@@ -52,18 +54,15 @@ public class SendCallInvitationActivity extends AppCompatActivity {
         });
     }
 
-    private void SetVoiceCall(String targetUserID){
+   private void SetVoiceCall(String user_ID,String user_name){
+       voice_call.setIsVideoCall(false);
+       voice_call.setResourceID("zego_uikit_call");
+       voice_call.setInvitees(Collections.singletonList(new ZegoUIKitUser(user_ID,user_name)));
+   }
 
-        voice_call.setIsVideoCall(false);
+    private void SetVideoCall(String user_ID,String user_name){
+        voice_call.setIsVideoCall(true);
         voice_call.setResourceID("zego_uikit_call");
-        voice_call.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID)));
-
-    }
-    private void SetVideoCall(String targetUserID){
-        video_call.setIsVideoCall(true);
-        video_call.setResourceID("zego_uikit_call");
-        video_call.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID)));
-
-
+        voice_call.setInvitees(Collections.singletonList(new ZegoUIKitUser(user_ID,user_name)));
     }
 }
